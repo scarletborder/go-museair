@@ -1,0 +1,86 @@
+package gomuseair_test
+
+import (
+	"strconv"
+	"testing"
+
+	gomuseair "github.com/scarletborder/go-museair/v1"
+)
+
+func TestHash(t *testing.T) {
+	var expected []uint64 = []uint64{
+		0x0b6d39af88433ee6, 0x9cc00eea41bd3bc9, 0x32b27bb7bb9f736a, 0x4feb8452bd56e235,
+		0xa5114a825618597c, 0x0bdef0a3ea34a1a6, 0x956881a26db0cf30, 0x2990f2b2e70c7d05,
+		0x07d1c1d80535f006, 0xe86d73ddb3754d7c, 0x31fa0d6e44a0f27e, 0x5013736ed17cbc5e,
+		0x69cc4eb7af802701, 0x4b1091c1d43ab72c, 0x216c965fc9ab9751, 0xc18056db002f3bbc,
+		0xa8aa59e62173ed5d, 0x4373103b94387939, 0xde99771e9bbd8d4c, 0xc7c381341387c5fe,
+		0x90b57f4f1c69c5a7, 0xecf7fa79cb53429b, 0xcff4bfdab0f71f1e, 0xe140d89a0ff60541,
+		0x8a19c7f2f6b7bd61, 0x474598eb56bd2aeb, 0x79f275aa8bf11687, 0xd5cf4b1e78f89c0e,
+		0xac3a38a616c8915c, 0x797bb417a3babafe, 0xc0ad6a59cafbc53b, 0x4422fdc8d2a69cda,
+		0x16fd16590ff35926, 0xd71e0ba325bae5c4, 0xe2b7be25a0aae8da, 0x046d5d46126d073d,
+		0x810f5b449ede45fe, 0x887b27b975632388, 0xc49aac01b4356752, 0x5600c945ea8879c5,
+		0x44769c263bc51c7f, 0xce5c5f515d74bf6c, 0x71618f721452e5b1, 0xa8c8b07b7adef460,
+		0xd836ea88450d9baf, 0xb4f219fec42c4191, 0x9c3cef0e3b8e98f4, 0x91082be3b45729b2,
+		0x93ed7bd9a8d36eea, 0x35b244af83f67a31, 0x106e71fb71e4b5ea, 0x8d1af305ffde3421,
+		0xbe531e4932b96f36, 0x9df6da515dfcd450, 0x1daab0778e5d984a, 0x67d4120e933cb3b5,
+		0xdad7a58655531478, 0xc2ff34ad10282834, 0xa0011cef8b776acb, 0x5229868a14c856ef,
+		0x0570225833d90c84, 0xf5e06cc158c5a432, 0x95569d58b1de557f, 0xde7aa3a4c3e70c5d,
+		0x25cc5b90a027e55c, 0x2e04d82214d8ee43, 0xd02a2ede714419b8, 0x148443abe1bc757d,
+		0xe029ba152ddc730f, 0x6f5a394519dc5e54, 0xd54b2fd27e6be0b2, 0xf5b84e22530f6688,
+		0x57963c7346ea2353, 0x5715fc0c0917d7b6, 0x5f017ca00fac2f89, 0x3344fb798b726bcd,
+		0x3a9ff40746656206, 0x881e2c878a94b333, 0xd02cf90c6eb96976, 0x5d0e5d28a6324c4f,
+		0x28fa1744fd995e3e, 0x1e0a4ae1444fa083, 0x60a55c6d5bbc2e7a, 0xac10edea386252cb,
+		0x79cb84af3a9d545a, 0x006e2d57351e6640, 0xeec9fd7a41925a70, 0x0b052945cce0f715,
+		0x729dd450d1a009e7, 0x15ad5c4f271b1498, 0xe8b7cc8ccf647f81, 0x76fb1916a3d8f1bc,
+		0x5b9490c401bb1aa9, 0xa9d5018ac77afb14, 0xe401b269b091a67b, 0xd29a938f15e10c69,
+		0x883817996fb97020, 0x6d25ba0149938550, 0x3b251625aaa5dae1, 0xe13e1433d0d37e76,
+		0x9061b9682d20bf25, 0xfd52b41cca311b3f, 0xaf27913c70e55474, 0x3c2cba85c85d918c,
+		0xbf31a47e6ee1e8d2, 0x65985a82a3e412a7, 0x0cdca9cda47c7d74, 0xaa047b5dd0feac60,
+		0x4c63b05d1b17e834, 0x37ff6ed87810d587, 0xd05c5b008a3da500, 0x0bb5d32d6b80e6f6,
+		0x6a353fbef065631e, 0x70418e1878a519c5, 0xa23b42432f4a0e7c, 0x55908aee6ec2471a,
+		0x6e29ad311d0c039c, 0x979bfc2ae961b9b7, 0xd08a19e9658d56fc, 0x0319c861c157ee31,
+		0xe68f99dd83fee865, 0xedd922733236650a, 0x62fd38e95fc39ca1, 0xcc022a4cdc495f7c,
+		0x3f93691daef7d612, 0xcadea7461ea5198d, 0xc5cba273c3005193, 0x87a7499b259360c4,
+		0x20770edff90ccf64, 0x36ebc4b5e494d671, 0xf35f2e1f4101e943, 0xf1b19c5c6d0d1783,
+		0xe0d5835d7fda9c29, 0x8600e0b26e87ca59, 0x6bb5e20ad197b591, 0x1b3f795851f6e760,
+		0xa56749a88ae64a3d, 0xb3000dcef0e4693d, 0x3c25270d129d952c, 0x5fe27b6f5dbb2a2a,
+		0x03af431fcba272ae, 0xb9afd6946dd9bc6d, 0xc7da40e06ca6f656, 0xec64fca3ae5e3704,
+		0x656cf372d990caf7, 0x03e58a2afd46198b, 0xe70ff8e867eee089, 0x05bb6ac84e1e7d08,
+		0xff3d3c2dff5ef23a, 0x4c4cf6465f5c1643, 0x168a500bf56ffa05, 0x41c2b5a2d3574bb5,
+		0xa1b868f2663a0a0f, 0xef122f010e71d4b3, 0x70d0072ae39e5222, 0xbae7466760eddd47,
+		0xed52313d88559aab, 0x200edc42416cde9c, 0x8d28ac3005e50a57, 0xcf830a27ce8f03a5,
+		0xb7124e7e8cd7914b, 0x54dd44e32ee41af9, 0xd5608193f75353b9, 0xf0dcda47d16a4cf9,
+		0xc19f2971120466ac, 0xcd385d1a237580ac, 0x6cc6bc17eccd2487, 0x01fd83e8a58b6c0f,
+		0xecd9d0ca24a03780, 0xe84dec6f27d762b1, 0x36a54eac0d6db1ce, 0x61261987c6f96a6f,
+		0xa623f7b12ee1db55, 0x64164064b4d06f53, 0xffec3687ddbbbb38, 0xfa342281291ae94b,
+		0x50b6fc812193c0b1, 0xe20ca499aead2dd1, 0x3de464e3a6ad761f, 0x0a2a66ee137b6a53,
+		0x1285acdee14adf20, 0xd3b61f73e8dbf7ce, 0xcf4f3e4ad56dd560, 0x0e6d9f0ca6e5b87a,
+		0x9845cc3bee70b0b1, 0xe0dc0633035d3c20, 0x7609981f49ffdbc0, 0xe7be2ec3c4704cb0,
+		0xd3bcecdf0370c5b0, 0xf23e37e9bae6f609, 0xad582d409cba1c16, 0x381a4dbb0b675792,
+		0x71e379de8107157a, 0x8a1f6e28058c5f3c, 0xed7c2ba7e7a751a6, 0x0d665751df9f4275,
+		0xe7f83a916d3369c8, 0x402650585a8ec912, 0x0e4cb5cb030f8675, 0x457716ad2e5ca034,
+	}
+	length := len(expected)
+	data := make([]uint8, length)
+	for i := range data {
+		data[i] = 0xAB
+	}
+
+	museAirNormal := gomuseair.NewNormalMuseAir()
+
+	for i := 1; i < length; i += 1 {
+		t.Run("bytes array `[0xAB;"+strconv.Itoa(i)+"]`", func(t *testing.T) {
+			dataSlice := make([]uint8, i)
+			copy(dataSlice, data[:i])
+			res := museAirNormal.Hash([]byte(dataSlice), 0)
+			if res != expected[i] {
+				t.Fatalf("fail, expect %#x got %#x", expected[i], res)
+			}
+		})
+	}
+
+}
+
+func TestHash128(t *testing.T) {
+
+}
